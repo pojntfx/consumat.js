@@ -1,13 +1,24 @@
 import { Client } from "pg";
 
 const query = async (query: string, parameters: string[]) => {
-  const client = new Client();
+  // Connect to the db
+  const client = new Client({
+    ssl: true,
+  });
   await client.connect();
 
-  const res = await client.query(query, [parameters]);
-  await client.end();
+  // Run the query
+  const res = await client.query(
+    query,
+    parameters.length == 0 ? undefined : [parameters]
+  );
 
-  return res;
+  // Disconnect from the db
+  (async () => {
+    await client.end();
+  })();
+
+  return res.rows;
 };
 
 export default query;
