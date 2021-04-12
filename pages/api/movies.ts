@@ -1,13 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import query from "../../lib/query";
 
 const movies = async (req: NextApiRequest, res: NextApiResponse) => {
-  res.status(200).json([
-    {
-      id: 1,
-      name: "2001",
-      description: "voluptatem dolor est",
-    },
-  ]);
+  const movies = await query("select * from movies", []);
+
+  res.status(200).json(movies);
 };
 
 export default movies;
