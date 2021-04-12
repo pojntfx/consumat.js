@@ -3,7 +3,9 @@ import { Client } from "pg";
 const query = async (query: string, parameters: string[]) => {
   // Connect to the db
   const client = new Client({
-    ssl: true,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   });
   await client.connect();
 
