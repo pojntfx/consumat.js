@@ -1,7 +1,13 @@
-import { DatePicker } from "antd";
+import useSWR from "swr";
+import fetcher from "../lib/fetcher";
 
-function HomePage() {
-  return <DatePicker />;
-}
+const Index = () => {
+  const { data, error } = useSWR("/api/movies", fetcher);
 
-export default HomePage;
+  if (error) return <div>Error</div>;
+  if (!data) return <div>Loading</div>;
+
+  return <div>{JSON.stringify(data)}</div>;
+};
+
+export default Index;
