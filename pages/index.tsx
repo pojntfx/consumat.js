@@ -1,13 +1,27 @@
-import useSWR from "swr";
-import fetcher from "../lib/fetcher";
+import { Button } from "antd";
+import { signIn, signOut, useSession } from "next-auth/client";
+import * as React from "react";
+import Movies from "../components/movies";
 
 const Index = () => {
-  const { data, error } = useSWR("/api/movies", fetcher);
+  const [session, loading] = useSession();
 
-  if (error) return <div>Error</div>;
-  if (!data) return <div>Loading</div>;
+  if (loading) return <div>Loading</div>;
+  if (!session)
+    return (
+      <div>
+        <h1>Not signed in</h1>
+        <Button onClick={() => signIn()}>Sign in</Button>
+      </div>
+    );
 
-  return <div>{JSON.stringify(data)}</div>;
+  return (
+    <div>
+      <h1>Signed in as {session.user.email}</h1>
+      <Button onClick={() => signOut()}>Sign out</Button>
+      <Movies />
+    </div>
+  );
 };
 
 export default Index;
