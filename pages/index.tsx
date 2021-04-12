@@ -1,5 +1,7 @@
+import { DatePicker } from "antd";
+
 function HomePage() {
-  return <h1>consumat.js</h1>;
+  return <DatePicker />;
 }
 
 export default HomePage;
